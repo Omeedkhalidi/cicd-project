@@ -1,0 +1,11 @@
+bin/
+obj/
+
+cicd-project.Tests/bin/
+cicd-project.Tests/obj/
+
+.vscode/
+*.user
+*.suo
+*.pdb
+*.exe
