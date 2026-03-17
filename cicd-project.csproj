@@ -11,6 +11,10 @@
     <Compile Remove="cicd-project.Tests\**\*.cs" />
     <EmbeddedResource Remove="cicd-project.Tests\**\*" />
     <None Remove="cicd-project.Tests\**\*" />
+
+    <Compile Remove="cicd-api\**\*.cs" />
+    <EmbeddedResource Remove="cicd-api\**\*" />
+    <None Remove="cicd-api\**\*" />
   </ItemGroup>
 
 </Project>
