@@ -43,5 +43,5 @@ http://localhost:5027/swagger
 
 ---
 
-## 👨‍💻 Författare
+## 👨‍💻 Författaren
 Omeed Khalidi
