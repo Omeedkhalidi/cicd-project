@@ -1,43 +1,44 @@
+using Microsoft.EntityFrameworkCore;
+using cicd_api;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlite("Data Source=tasks.db"));
 
 var app = builder.Build();
 
 app.UseSwagger();
 app.UseSwaggerUI();
 
-var tasks = new List<TaskItem>
-{
-    new(1, "Plugga CI/CD", false),
-    new(2, "Testa Swagger", true)
-};
-
 app.MapGet("/", () => "API is running");
 
-app.MapGet("/test", () => "swagger should work");
+app.MapGet("/tasks", async (AppDbContext db) =>
+    await db.Tasks.ToListAsync());
 
-app.MapGet("/tasks", () => tasks);
-
-app.MapGet("/tasks/{id}", (int id) =>
+app.MapGet("/tasks/{id}", async (int id, AppDbContext db) =>
 {
-    var task = tasks.FirstOrDefault(t => t.Id == id);
+    var task = await db.Tasks.FindAsync(id);
 
     return task is not null
         ? Results.Ok(task)
         : Results.NotFound();
 });
 
-app.MapPost("/tasks", (TaskItem newTask) =>
+app.MapPost("/tasks", async (TaskItem newTask, AppDbContext db) =>
 {
-    tasks.Add(newTask);
+    db.Tasks.Add(newTask);
+    await db.SaveChangesAsync();
+
     return Results.Created($"/tasks/{newTask.Id}", newTask);
 });
 
-app.MapPut("/tasks/{id}", (int id, TaskItem updatedTask) =>
+app.MapPut("/tasks/{id}", async (int id, TaskItem updatedTask, AppDbContext db) =>
 {
-    var task = tasks.FirstOrDefault(t => t.Id == id);
+    var task = await db.Tasks.FindAsync(id);
 
     if (task is null)
         return Results.NotFound();
@@ -45,32 +46,21 @@ app.MapPut("/tasks/{id}", (int id, TaskItem updatedTask) =>
     task.Title = updatedTask.Title;
     task.IsDone = updatedTask.IsDone;
 
+    await db.SaveChangesAsync();
     return Results.Ok(task);
 });
 
-app.MapDelete("/tasks/{id}", (int id) =>
+app.MapDelete("/tasks/{id}", async (int id, AppDbContext db) =>
 {
-    var task = tasks.FirstOrDefault(t => t.Id == id);
+    var task = await db.Tasks.FindAsync(id);
 
     if (task is null)
         return Results.NotFound();
 
-    tasks.Remove(task);
+    db.Tasks.Remove(task);
+    await db.SaveChangesAsync();
+
     return Results.NoContent();
 });
 
 app.Run();
-
-class TaskItem
-{
-    public int Id { get; set; }
-    public string Title { get; set; }
-    public bool IsDone { get; set; }
-
-    public TaskItem(int id, string title, bool isDone)
-    {
-        Id = id;
-        Title = title;
-        IsDone = isDone;
-    }
-}
