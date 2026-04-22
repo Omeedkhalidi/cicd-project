@@ -1,47 +1,38 @@
-# CI/CD Project 
+# CI/CD Task API
 
 [![CI Pipeline](https://github.com/Omeedkhalidi/cicd-project/actions/workflows/ci.yml/badge.svg)](https://github.com/Omeedkhalidi/cicd-project/actions/workflows/ci.yml)
 
-##  Beskrivning
-Detta projekt är ett .NET API byggt med ASP.NET Core.
+## Projektbeskrivning
 
-API:t stödjer CRUD (Create, Read, Update, Delete) för Tasks.
+Detta examensarbete är ett backend-projekt byggt med ASP.NET Core Web API.
+
+Applikationen används för att hantera tasks med full CRUD-funktionalitet och visar hur man bygger ett modernt API med databas, tester och CI/CD.
 
 ---
 
 ## Funktioner
 
-- GET /tasks → hämta alla tasks  
-- GET /tasks/{id} → hämta en task  
-- POST /tasks → skapa en task  
-- PUT /tasks/{id} → uppdatera en task  
-- DELETE /tasks/{id} → ta bort en task  
+- Skapa task
+- Visa alla tasks
+- Visa task via ID
+- Uppdatera task
+- Ta bort task
 
 ---
 
-##  Tester
+## Tekniker
 
-Kör tester:
+- ASP.NET Core (.NET 9)
+- Entity Framework Core
+- SQLite
+- Swagger / OpenAPI
+- xUnit
+- GitHub Actions
+
+---
+
+## Installation
 
 ```bash
-dotnet test
-```
-
----
-
-## CI
-
-Projektet använder GitHub Actions för att:
-- bygga projektet
-- köra tester automatiskt
-
----
-
-## 🌐 Swagger
-
-http://localhost:5027/swagger
-
----
-
-## 👨‍💻 Författaren
-Omeed Khalidi
+git clone https://github.com/Omeedkhalidi/cicd-project.git
+cd cicd-project
